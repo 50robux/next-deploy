@@ -1,0 +1,62 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Video {
+  id           Int         @id @default(autoincrement())
+  title        String
+  description  String?
+  price        Decimal      @db.Decimal(10, 2)
+  videoUrl     String
+  thumbnailUrl String       // ฟิลด์ใหม่สำหรับ URL ของภาพตัวอย่าง
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  codeUsages   CodeUsage[]
+}
+
+model Code {
+  id         Int          @id @default(autoincrement())
+  code       String       @unique
+  maxUsage   Int
+  usages     Int          @default(0)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  payments   Payment[]
+  codeUsages CodeUsage[]
+}
+
+model Payment {
+  id               Int      @id @default(autoincrement())
+  code             Code     @relation(fields: [codeId], references: [id])
+  codeId           Int
+  verificationData Json
+  slipHash         String   @unique
+  amount           Decimal  @db.Decimal(10, 2)
+  status           String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model CodeUsage {
+  id        Int      @id @default(autoincrement())
+  code      Code     @relation(fields: [codeId], references: [id])
+  codeId    Int
+  video     Video    @relation(fields: [videoId], references: [id])
+  videoId   Int
+  createdAt DateTime @default(now())
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

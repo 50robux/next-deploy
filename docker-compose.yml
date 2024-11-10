@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  mysql_db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin123456
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+
+  nextapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nextjs_app
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env.production
+    ports:
+      - "80:3000"
+    depends_on:
+      - mysql_db
+    networks:
+      - app-network
+    restart: on-failure
+
+volumes:
+  mysql_data:
+
+networks:
+  app-network:
+    driver: bridge
