@@ -85,10 +85,10 @@ export default function AdminLoginPage() {
                         '\x1b[32m[ACCESS GRANTED]\x1b[0m',
                         'Initializing secure session...'
                     ]);
-                    router.refresh();
                     setTimeout(() => {
-
-                        router.push('/admin/videos');
+                        router.refresh();
+                        router.replace('/admin/videos');
+                        console.log("Redirecting to admin page")
                     }, 500);
                 } else {
                     setMessages(prev => [
