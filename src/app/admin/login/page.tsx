@@ -87,8 +87,8 @@ export default function AdminLoginPage() {
                     ]);
 
                     setTimeout(() => {
-                        router.refresh();
-                        router.prefetch();
+                        // router.refresh();
+                        // router.prefetch('/admin/videos');
                         router.replace('/admin/videos');
                         console.log("Redirecting to admin page")
                     }, 500);
