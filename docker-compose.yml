@@ -28,12 +28,13 @@ services:
       - "80:3000"
     depends_on:
       - mysql_db
+    restart: on-failure # Ensures it retries on failure
     networks:
       - app-network
-    restart: on-failure
 
 volumes:
   mysql_data:
+
 
 networks:
   app-network:
