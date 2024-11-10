@@ -85,8 +85,9 @@ export default function AdminLoginPage() {
                         '\x1b[32m[ACCESS GRANTED]\x1b[0m',
                         'Initializing secure session...'
                     ]);
+                    router.refresh();
                     setTimeout(() => {
-                        router.refresh();
+
                         router.push('/admin/videos');
                     }, 500);
                 } else {
